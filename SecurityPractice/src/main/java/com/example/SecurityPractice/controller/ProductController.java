@@ -1,5 +1,6 @@
 package com.example.SecurityPractice.controller;
 
+import com.example.SecurityPractice.dto.AuthRequest;
 import com.example.SecurityPractice.model.UserInfo;
 import com.example.SecurityPractice.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,11 @@ public class ProductController {
     @PreAuthorize("hasRole('ADMIN')")
     public String hello() {
         return "Hello";
+    }
+
+    @PostMapping("/authenticate")
+    public String authenticateAndGetToken(AuthRequest authRequest)
+    {
+
     }
 }
