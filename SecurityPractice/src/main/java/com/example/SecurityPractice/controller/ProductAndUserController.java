@@ -6,6 +6,10 @@ import com.example.SecurityPractice.service.JwtService;
 import com.example.SecurityPractice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +20,8 @@ public class ProductAndUserController {
     private final ProductService productService;
 
     private final JwtService jwtService;
+
+    private final AuthenticationManager authenticationManager;
 
     @GetMapping("/welcome")
     public String welcome() {
@@ -34,8 +40,20 @@ public class ProductAndUserController {
     }
 
     @PostMapping("/authenticate")
-    public String authenticateAndGetToken(AuthRequest authRequest)
+    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest)
     {
-        return jwtService.generateToken(authRequest.getUsername());
+        Authentication authenticate = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+
+        if(authenticate.isAuthenticated())
+        {
+            return jwtService.generateToken(authRequest.getUsername());
+        }
+        else
+        {
+            System.out.println("Invalid user or password");
+            throw new UsernameNotFoundException("Invalid user request");
+        }
+
     }
 }
