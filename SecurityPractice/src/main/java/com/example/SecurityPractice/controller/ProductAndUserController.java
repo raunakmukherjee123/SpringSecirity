@@ -2,18 +2,20 @@ package com.example.SecurityPractice.controller;
 
 import com.example.SecurityPractice.dto.AuthRequest;
 import com.example.SecurityPractice.model.UserInfo;
+import com.example.SecurityPractice.service.JwtService;
 import com.example.SecurityPractice.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/product")
-public class ProductController {
+public class ProductAndUserController {
 
     private final ProductService productService;
+
+    private final JwtService jwtService;
 
     @GetMapping("/welcome")
     public String welcome() {
@@ -34,6 +36,6 @@ public class ProductController {
     @PostMapping("/authenticate")
     public String authenticateAndGetToken(AuthRequest authRequest)
     {
-
+        return jwtService.generateToken(authRequest.getUsername());
     }
 }
