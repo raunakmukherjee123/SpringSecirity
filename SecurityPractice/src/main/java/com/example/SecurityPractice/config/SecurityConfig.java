@@ -2,6 +2,7 @@ package com.example.SecurityPractice.config;
 
 import com.example.SecurityPractice.filter.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
 @EnableWebSecurity
@@ -24,23 +26,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
-    private JwtAuthFilter authFilter;
+    @Qualifier("handlerExceptionResolver")
+    private HandlerExceptionResolver exceptionResolver;
+
 
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder encoder)
     {
-//        UserDetails admin= User.withUsername("Admin1")
-//                .password(encoder.encode("123"))
-//                .roles("ADMIN")
-//                .build();
-//        UserDetails user= User.withUsername("User1")
-//                .password(encoder.encode("1234"))
-//                .roles("USER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(admin,user);
-
         return new UserInfoUserDetailsService();
+    }
+
+    @Bean
+    public JwtAuthFilter jwtAuthFilter()
+    {
+        return new JwtAuthFilter(exceptionResolver);
     }
 
     @Bean
@@ -52,24 +51,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider) throws Exception
     {
-//        http.csrf(csrf->csrf.disable());
-//
-//       http.authorizeHttpRequests((request)->request
-//               .requestMatchers("/api/product/welcome").permitAll()
-//               .anyRequest().authenticated());
-//
-//       http.formLogin();
-//
-//        return http.build();
-
         http.csrf(csrf -> csrf.disable());
 
         http.authorizeHttpRequests(request -> request
                 .requestMatchers("/api/product/welcome","/api/product/new/user","/api/product/authenticate").permitAll()
                 .anyRequest().authenticated());
-
-//        http.formLogin(form -> form
-//                .permitAll());
 
         http.sessionManagement(
                 session ->
@@ -79,7 +65,7 @@ public class SecurityConfig {
 
         http.authenticationProvider(authenticationProvider);
 
-        http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
