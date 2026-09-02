@@ -1,10 +1,13 @@
 package com.example.SecurityPractice.controller;
 
 import com.example.SecurityPractice.dto.AuthRequest;
+import com.example.SecurityPractice.dto.UserResponse;
 import com.example.SecurityPractice.model.UserInfo;
 import com.example.SecurityPractice.service.JwtService;
 import com.example.SecurityPractice.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,5 +58,13 @@ public class ProductAndUserController {
             throw new UsernameNotFoundException("Invalid user request");
         }
 
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getUserById(@PathVariable Integer id)
+    {
+        UserResponse userResponse=productService.getUserById(id);
+
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 }

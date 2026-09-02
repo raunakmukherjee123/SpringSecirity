@@ -1,6 +1,8 @@
 package com.example.SecurityPractice.service;
 
+import com.example.SecurityPractice.dto.UserResponse;
 import com.example.SecurityPractice.model.UserInfo;
+import com.example.SecurityPractice.projection.UserProjection;
 import com.example.SecurityPractice.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,5 +19,11 @@ public class ProductService {
         userInfoRepository.save(userInfo);
 
         return "User has been added";
+    }
+
+    public UserResponse getUserById(Integer id) {
+        UserProjection userProjection=userInfoRepository.getUserById(id);
+
+
     }
 }
