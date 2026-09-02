@@ -24,6 +24,12 @@ public class ProductService {
     public UserResponse getUserById(Integer id) {
         UserProjection userProjection=userInfoRepository.getUserById(id);
 
+        UserResponse userResponse=UserResponse.builder()
+                .name(userProjection.getName())
+                .email(userProjection.getEmail())
+                .role(userProjection.getRoles())
+                .build();
 
+        return userResponse;
     }
 }
