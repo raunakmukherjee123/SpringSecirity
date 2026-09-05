@@ -2,6 +2,7 @@ package com.example.SecurityPractice.service;
 
 import com.example.SecurityPractice.dto.ProductResponse;
 import com.example.SecurityPractice.dto.UserResponse;
+import com.example.SecurityPractice.exception.ProductNotFoundException;
 import com.example.SecurityPractice.model.Product;
 import com.example.SecurityPractice.model.UserInfo;
 import com.example.SecurityPractice.projection.UserProjection;
@@ -42,6 +43,15 @@ public class ProductService {
     }
 
     public ProductResponse getProductById(Integer id) {
-        Product product=productRepository.findById(id).orElseThrow(()->new RuntimeException("No product found"));
+        Product product=productRepository.findById(id)
+                .orElseThrow(()->new ProductNotFoundException("No product found of id = "+id));
+
+        ProductResponse productResponse=ProductResponse.builder()
+                .name(product.getName())
+                .price(product.getPrice())
+                .qty(product.getQty())
+                .build();
+
+        return productResponse;
     }
 }
