@@ -20,8 +20,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int productId;
-
     private String name;
 
     private int qty;

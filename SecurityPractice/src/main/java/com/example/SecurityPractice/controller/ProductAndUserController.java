@@ -2,6 +2,7 @@ package com.example.SecurityPractice.controller;
 
 import com.example.SecurityPractice.dto.AuthRequest;
 import com.example.SecurityPractice.dto.UserResponse;
+import com.example.SecurityPractice.model.Product;
 import com.example.SecurityPractice.model.UserInfo;
 import com.example.SecurityPractice.service.JwtService;
 import com.example.SecurityPractice.service.ProductService;
@@ -66,5 +67,14 @@ public class ProductAndUserController {
         UserResponse userResponse=productService.getUserById(id);
 
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> addProduct(@RequestBody Product product)
+    {
+        productService.addProduct(product);
+
+        return new ResponseEntity<>("Product has been added",HttpStatus.CREATED);
     }
 }

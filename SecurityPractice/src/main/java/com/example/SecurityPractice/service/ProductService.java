@@ -1,8 +1,10 @@
 package com.example.SecurityPractice.service;
 
 import com.example.SecurityPractice.dto.UserResponse;
+import com.example.SecurityPractice.model.Product;
 import com.example.SecurityPractice.model.UserInfo;
 import com.example.SecurityPractice.projection.UserProjection;
+import com.example.SecurityPractice.repository.ProductRepository;
 import com.example.SecurityPractice.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class ProductService {
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ProductRepository productRepository;
 
     public String addUser(UserInfo userInfo) {
         userInfo.setPassword(passwordEncoder.encode(userInfo.getPassword()));
@@ -31,5 +34,9 @@ public class ProductService {
                 .build();
 
         return userResponse;
+    }
+
+    public void addProduct(Product product) {
+        productRepository.save(product);
     }
 }
