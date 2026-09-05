@@ -1,5 +1,6 @@
 package com.example.SecurityPractice.service;
 
+import com.example.SecurityPractice.dto.ProductResponse;
 import com.example.SecurityPractice.dto.UserResponse;
 import com.example.SecurityPractice.model.Product;
 import com.example.SecurityPractice.model.UserInfo;
@@ -38,5 +39,9 @@ public class ProductService {
 
     public void addProduct(Product product) {
         productRepository.save(product);
+    }
+
+    public ProductResponse getProductById(Integer id) {
+        Product product=productRepository.findById(id).orElseThrow(()->new RuntimeException("No product found"));
     }
 }
