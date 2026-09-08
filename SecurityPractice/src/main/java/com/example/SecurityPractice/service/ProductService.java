@@ -5,6 +5,7 @@ import com.example.SecurityPractice.dto.UserResponse;
 import com.example.SecurityPractice.exception.ProductNotFoundException;
 import com.example.SecurityPractice.model.Product;
 import com.example.SecurityPractice.model.UserInfo;
+import com.example.SecurityPractice.projection.ProductProjection;
 import com.example.SecurityPractice.projection.UserProjection;
 import com.example.SecurityPractice.repository.ProductRepository;
 import com.example.SecurityPractice.repository.UserInfoRepository;
@@ -43,13 +44,17 @@ public class ProductService {
     }
 
     public ProductResponse getProductById(Integer id) {
-        Product product=productRepository.findById(id)
-                .orElseThrow(()->new ProductNotFoundException("No product found of id = "+id));
+        ProductProjection productProjection=productRepository.findProductById(id);
+
+        if(productProjection==null)
+        {
+            throw new ProductNotFoundException("No product found of id = "+id);
+        }
 
         ProductResponse productResponse=ProductResponse.builder()
-                .name(product.getName())
-                .price(product.getPrice())
-                .qty(product.getQty())
+                .name(productProjection.getName())
+                .price(productProjection.getPrice())
+                .qty(productProjection.getQty())
                 .build();
 
         return productResponse;
