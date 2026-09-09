@@ -1,5 +1,6 @@
 package com.example.SecurityPractice.service;
 
+import com.example.SecurityPractice.dto.PageResponse;
 import com.example.SecurityPractice.dto.ProductResponse;
 import com.example.SecurityPractice.dto.UserResponse;
 import com.example.SecurityPractice.exception.ProductNotFoundException;
@@ -10,8 +11,14 @@ import com.example.SecurityPractice.projection.UserProjection;
 import com.example.SecurityPractice.repository.ProductRepository;
 import com.example.SecurityPractice.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -58,5 +65,20 @@ public class ProductService {
                 .build();
 
         return productResponse;
+    }
+
+    public PageResponse<?> findAllProducts(int pageNo, int pageSize, String sortBy) {
+        Pageable pageable= PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
+        Page<Product> productPage=productRepository.findAll(pageable);
+        List<Product> products=productPage.getContent();
+
+        return PageResponse.<List<Product>>builder()
+                .totalPages(productPage.getTotalPages())
+                .content(products)
+                .isLastPage(productPage.isLast())
+                .pageNumber(productPage.getNumber())
+                .pageSize(productPage.getSize())
+                .totalElements(productPage.getTotalElements())
+                .build();
     }
 }

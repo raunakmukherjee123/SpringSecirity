@@ -1,6 +1,7 @@
 package com.example.SecurityPractice.controller;
 
 import com.example.SecurityPractice.dto.AuthRequest;
+import com.example.SecurityPractice.dto.PageResponse;
 import com.example.SecurityPractice.dto.ProductResponse;
 import com.example.SecurityPractice.dto.UserResponse;
 import com.example.SecurityPractice.model.Product;
@@ -86,5 +87,16 @@ public class ProductAndUserController {
         ProductResponse productResponse=productService.getProductById(id);
 
         return new ResponseEntity<>(productResponse,HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public PageResponse<?> getAllUser(
+            @RequestParam(value = "pageNo",defaultValue = "0",required = false) int pageNo,
+            @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize,
+            @RequestParam(value = "sortBy",defaultValue = "id",required = false) String sortBy
+    )
+    {
+        return productService.findAllProducts(pageNo,pageSize,sortBy);
     }
 }
