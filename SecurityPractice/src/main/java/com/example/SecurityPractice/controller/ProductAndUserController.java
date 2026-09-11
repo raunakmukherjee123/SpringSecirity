@@ -91,12 +91,22 @@ public class ProductAndUserController {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
-    public PageResponse<?> getAllUser(
+    public PageResponse<?> getAllProducts(
             @RequestParam(value = "pageNo",defaultValue = "0",required = false) int pageNo,
             @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize,
             @RequestParam(value = "sortBy",defaultValue = "id",required = false) String sortBy
     )
     {
         return productService.findAllProducts(pageNo,pageSize,sortBy);
+    }
+
+    @GetMapping("/user/all")
+    public PageResponse<?> getAllUsers(
+            @RequestParam(value = "pageNo",defaultValue = "0",required = false) int pageNo,
+            @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize,
+            @RequestParam(value = "sortBy",defaultValue = "id",required = false) String sortBy
+    )
+    {
+        return productService.findAllUsers(pageNo,pageSize,sortBy);
     }
 }

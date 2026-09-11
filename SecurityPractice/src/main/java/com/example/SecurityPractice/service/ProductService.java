@@ -81,4 +81,20 @@ public class ProductService {
                 .totalElements(productPage.getTotalElements())
                 .build();
     }
+
+    public PageResponse<?> findAllUsers(int pageNo, int pageSize, String sortBy) {
+        Pageable pageable=PageRequest.of(pageNo,pageSize,Sort.by(sortBy));
+        Page<UserInfo> userInfoPage=userInfoRepository.findAll(pageable);
+        List<UserInfo> userInfos=userInfoPage.getContent();
+
+        return PageResponse.<List<UserInfo>>builder()
+                .totalPages(userInfoPage.getTotalPages())
+                .content(userInfos)
+                .isLastPage(userInfoPage.isLast())
+                .pageNumber(userInfoPage.getNumber())
+                .pageSize(userInfoPage.getSize())
+                .totalElements(userInfoPage.getTotalElements())
+                .build();
+
+    }
 }
