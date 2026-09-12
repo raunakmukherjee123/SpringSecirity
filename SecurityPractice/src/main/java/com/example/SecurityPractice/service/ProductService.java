@@ -69,10 +69,10 @@ public class ProductService {
 
     public PageResponse<?> findAllProducts(int pageNo, int pageSize, String sortBy) {
         Pageable pageable= PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
-        Page<Product> productPage=productRepository.findAll(pageable);
-        List<Product> products=productPage.getContent();
+        Page<ProductProjection> productPage=productRepository.findAllProducts(pageable);
+        List<ProductProjection> products=productPage.getContent();
 
-        return PageResponse.<List<Product>>builder()
+        return PageResponse.<List<ProductProjection>>builder()
                 .totalPages(productPage.getTotalPages())
                 .content(products)
                 .isLastPage(productPage.isLast())
