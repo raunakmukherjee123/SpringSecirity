@@ -84,10 +84,10 @@ public class ProductService {
 
     public PageResponse<?> findAllUsers(int pageNo, int pageSize, String sortBy) {
         Pageable pageable=PageRequest.of(pageNo,pageSize,Sort.by(sortBy));
-        Page<UserInfo> userInfoPage=userInfoRepository.findAll(pageable);
-        List<UserInfo> userInfos=userInfoPage.getContent();
+        Page<UserProjection> userInfoPage=userInfoRepository.findAllUsers(pageable);
+        List<UserProjection> userInfos=userInfoPage.getContent();
 
-        return PageResponse.<List<UserInfo>>builder()
+        return PageResponse.<List<UserProjection>>builder()
                 .totalPages(userInfoPage.getTotalPages())
                 .content(userInfos)
                 .isLastPage(userInfoPage.isLast())
