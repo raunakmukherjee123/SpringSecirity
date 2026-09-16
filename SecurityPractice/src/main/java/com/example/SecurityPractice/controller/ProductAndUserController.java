@@ -108,9 +108,18 @@ public class ProductAndUserController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateProduct(@RequestBody ProductRequest productRequest, @PathVariable("id") int id)
     {
         String s= productService.updateProduct(productRequest,id);
+
+        return new ResponseEntity<>(s,HttpStatus.OK);
+    }
+
+    @PatchMapping("/user/{id}")
+    public ResponseEntity<?> updateUser(@RequestBody UserRequest userRequest, @PathVariable("id") Integer id)
+    {
+        String s= productService.updateUser(userRequest,id);
 
         return new ResponseEntity<>(s,HttpStatus.OK);
     }

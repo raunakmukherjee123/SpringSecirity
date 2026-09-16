@@ -1,10 +1,8 @@
 package com.example.SecurityPractice.service;
 
-import com.example.SecurityPractice.dto.PageResponse;
-import com.example.SecurityPractice.dto.ProductRequest;
-import com.example.SecurityPractice.dto.ProductResponse;
-import com.example.SecurityPractice.dto.UserResponse;
+import com.example.SecurityPractice.dto.*;
 import com.example.SecurityPractice.exception.ProductNotFoundException;
+import com.example.SecurityPractice.exception.UserNotFoundException;
 import com.example.SecurityPractice.model.Product;
 import com.example.SecurityPractice.model.UserInfo;
 import com.example.SecurityPractice.projection.ProductProjection;
@@ -109,5 +107,16 @@ public class ProductService {
         productRepository.save(product);
 
         return "Product has been updated";
+    }
+
+    public String updateUser(UserRequest userRequest, Integer id) {
+        UserInfo userInfo=userInfoRepository.findById(id)
+                .orElseThrow(()->new UserNotFoundException("No user found of id = "+id));
+
+        userInfo.setEmail(userRequest.getEmail());
+
+        userInfoRepository.save(userInfo);
+
+        return "User has been updated";
     }
 }
