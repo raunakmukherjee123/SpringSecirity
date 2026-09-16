@@ -1,6 +1,7 @@
 package com.example.SecurityPractice.service;
 
 import com.example.SecurityPractice.dto.PageResponse;
+import com.example.SecurityPractice.dto.ProductRequest;
 import com.example.SecurityPractice.dto.ProductResponse;
 import com.example.SecurityPractice.dto.UserResponse;
 import com.example.SecurityPractice.exception.ProductNotFoundException;
@@ -96,5 +97,17 @@ public class ProductService {
                 .totalElements(userInfoPage.getTotalElements())
                 .build();
 
+    }
+
+    public String updateProduct(ProductRequest productRequest, int id) {
+
+        Product product=productRepository.findById(id)
+                .orElseThrow(()->new ProductNotFoundException("No product found of id = "+id));
+
+        product.setName(productRequest.getName());
+
+        productRepository.save(product);
+
+        return "Product has been updated";
     }
 }

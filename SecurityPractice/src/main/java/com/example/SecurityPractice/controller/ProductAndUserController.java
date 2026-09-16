@@ -1,9 +1,6 @@
 package com.example.SecurityPractice.controller;
 
-import com.example.SecurityPractice.dto.AuthRequest;
-import com.example.SecurityPractice.dto.PageResponse;
-import com.example.SecurityPractice.dto.ProductResponse;
-import com.example.SecurityPractice.dto.UserResponse;
+import com.example.SecurityPractice.dto.*;
 import com.example.SecurityPractice.model.Product;
 import com.example.SecurityPractice.model.UserInfo;
 import com.example.SecurityPractice.service.JwtService;
@@ -108,5 +105,13 @@ public class ProductAndUserController {
     )
     {
         return productService.findAllUsers(pageNo,pageSize,sortBy);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@RequestBody ProductRequest productRequest, @PathVariable("id") int id)
+    {
+        String s= productService.updateProduct(productRequest,id);
+
+        return new ResponseEntity<>(s,HttpStatus.OK);
     }
 }
