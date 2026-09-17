@@ -123,4 +123,14 @@ public class ProductAndUserController {
 
         return new ResponseEntity<>(s,HttpStatus.OK);
     }
+
+    @DeleteMapping("delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") int id)
+    {
+        String s=productService.deleteProduct(id);
+
+        return new ResponseEntity<>(s,HttpStatus.OK);
+    }
+
 }

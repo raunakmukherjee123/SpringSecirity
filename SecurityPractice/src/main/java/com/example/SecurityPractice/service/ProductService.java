@@ -123,4 +123,13 @@ public class ProductService {
 
         return "User has been updated";
     }
+
+    public String deleteProduct(int id) {
+        Product product=productRepository.findById(id)
+                .orElseThrow(()->new ProductNotFoundException("No product found of id = "+id));
+
+        productRepository.delete(product);
+
+        return "Product has been deleted";
+    }
 }
