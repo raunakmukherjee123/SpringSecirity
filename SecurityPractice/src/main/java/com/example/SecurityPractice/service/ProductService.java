@@ -103,6 +103,8 @@ public class ProductService {
                 .orElseThrow(()->new ProductNotFoundException("No product found of id = "+id));
 
         product.setName(productRequest.getName());
+        product.setPrice(productRequest.getPrice());
+        product.setQty(productRequest.getQty());
 
         productRepository.save(product);
 
@@ -114,6 +116,8 @@ public class ProductService {
                 .orElseThrow(()->new UserNotFoundException("No user found of id = "+id));
 
         userInfo.setEmail(userRequest.getEmail());
+        userInfo.setRoles(userRequest.getRoles());
+        userInfo.setName(userRequest.getName());
 
         userInfoRepository.save(userInfo);
 
