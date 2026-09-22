@@ -133,4 +133,12 @@ public class ProductAndUserController {
         return new ResponseEntity<>(s,HttpStatus.OK);
     }
 
+    @DeleteMapping("delete/user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") int id)
+    {
+        String s=productService.deleteUser(id);
+
+        return new ResponseEntity<>(s,HttpStatus.OK);
+    }
+
 }

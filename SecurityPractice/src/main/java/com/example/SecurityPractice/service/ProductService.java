@@ -132,4 +132,13 @@ public class ProductService {
 
         return "Product has been deleted";
     }
+
+    public String deleteUser(int id) {
+        UserInfo userInfo=userInfoRepository.findById(id)
+                .orElseThrow(()->new UserNotFoundException("No user found of this id to get deleted"));
+
+        userInfoRepository.delete(userInfo);
+
+        return "User has been deleted";
+    }
 }
