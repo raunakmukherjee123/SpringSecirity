@@ -121,7 +121,7 @@ public class ProductService {
 
         userInfoRepository.save(userInfo);
 
-        return "User has been updated";
+
     }
 
     public String deleteProduct(int id) {
