@@ -1,5 +1,6 @@
 package com.example.SecurityPractice.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import java.time.Instant;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class APIResponse<T> {
     private Instant timestamp;
     private int status;
