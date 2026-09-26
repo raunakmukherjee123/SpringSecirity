@@ -85,7 +85,16 @@ public class ProductAndUserController {
     {
         ProductResponse productResponse=productService.getProductById(id);
 
-        return new ResponseEntity<>(productResponse,HttpStatus.OK);
+        APIResponse response=APIResponse.builder()
+                .code(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .timestamp(Instant.now())
+                .data(productResponse)
+                .message("Successfully received the product of id= "+id)
+                .build();
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @GetMapping("/all")
@@ -115,7 +124,16 @@ public class ProductAndUserController {
     {
         String s= productService.updateProduct(productRequest,id);
 
-        return new ResponseEntity<>(s,HttpStatus.OK);
+        APIResponse response=APIResponse.builder()
+                .code(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .timestamp(Instant.now())
+                .data(s)
+                .message("Successfully updated the product of id= "+id)
+                .build();
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @PatchMapping("/user/{id}")
