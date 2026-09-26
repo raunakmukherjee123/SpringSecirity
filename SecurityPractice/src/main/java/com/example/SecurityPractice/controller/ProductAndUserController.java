@@ -15,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/product")
@@ -121,7 +123,16 @@ public class ProductAndUserController {
     {
         String s= productService.updateUser(userRequest,id);
 
-        return new ResponseEntity<>(s,HttpStatus.OK);
+        APIResponse response=APIResponse.builder()
+                .code(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .timestamp(Instant.now())
+                .data(s)
+                .message("Successfully updated the user of id= "+id)
+                .build();
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @DeleteMapping("delete/{id}")
@@ -130,7 +141,16 @@ public class ProductAndUserController {
     {
         String s=productService.deleteProduct(id);
 
-        return new ResponseEntity<>(s,HttpStatus.OK);
+        APIResponse response=APIResponse.builder()
+                .code(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .timestamp(Instant.now())
+                .data(s)
+                .message("Successfully deleted the product of id= "+id)
+                .build();
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     @DeleteMapping("delete/user/{id}")
@@ -138,7 +158,16 @@ public class ProductAndUserController {
     {
         String s=productService.deleteUser(id);
 
-        return new ResponseEntity<>(s,HttpStatus.OK);
+        APIResponse response=APIResponse.builder()
+                .code(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .timestamp(Instant.now())
+                .data(s)
+                .message("Successfully deleted the user of id= "+id)
+                .build();
+
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
 }
