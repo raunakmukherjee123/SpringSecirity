@@ -67,7 +67,16 @@ public class ProductAndUserController {
     {
         UserResponse userResponse=productService.getUserById(id);
 
-        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        APIResponse response=APIResponse.builder()
+                .code(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .timestamp(Instant.now())
+                .data(userResponse)
+                .message("Successfully updated the product of id= "+id)
+                .build();
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/add")
