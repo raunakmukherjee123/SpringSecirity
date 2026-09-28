@@ -74,9 +74,18 @@ public class ProductAndUserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addProduct(@RequestBody Product product)
     {
-        productService.addProduct(product);
+        ProductResponse productResponse=productService.addProduct(product);
 
-        return new ResponseEntity<>("Product has been added",HttpStatus.CREATED);
+        APIResponse response=APIResponse.builder()
+                .code(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .timestamp(Instant.now())
+                .data(productResponse)
+                .message("Successfully added product")
+                .build();
+
+        return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

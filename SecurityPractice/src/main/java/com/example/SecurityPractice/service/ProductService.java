@@ -45,8 +45,14 @@ public class ProductService {
         return userResponse;
     }
 
-    public void addProduct(Product product) {
-        productRepository.save(product);
+    public ProductResponse addProduct(Product product) {
+        Product savedProduct=productRepository.save(product);
+
+        return ProductResponse.builder()
+                .qty(savedProduct.getQty())
+                .price(savedProduct.getPrice())
+                .name(savedProduct.getName())
+                .build();
     }
 
     public ProductResponse getProductById(Integer id) {
