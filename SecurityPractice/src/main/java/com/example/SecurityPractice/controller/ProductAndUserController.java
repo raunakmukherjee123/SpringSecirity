@@ -117,13 +117,22 @@ public class ProductAndUserController {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
-    public PageResponse<?> getAllProducts(
+    public ResponseEntity<?> getAllProducts(
             @RequestParam(value = "pageNo",defaultValue = "0",required = false) int pageNo,
             @RequestParam(value = "pageSize",defaultValue = "10",required = false) int pageSize,
             @RequestParam(value = "sortBy",defaultValue = "id",required = false) String sortBy
     )
     {
-        return productService.findAllProducts(pageNo,pageSize,sortBy);
+        APIResponse apiResponse=APIResponse.builder()
+                .code(HttpStatus.OK)
+                .status(HttpStatus.OK.value())
+                .success(true)
+                .timestamp(Instant.now())
+                .data(productService.findAllProducts(pageNo,pageSize,sortBy))
+                .message("Successfully fetched all products in paginated form")
+                .build();
+
+        return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
     @GetMapping("/user/all")
